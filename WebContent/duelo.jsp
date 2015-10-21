@@ -1,17 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<jsp:include page="cabecalho.jsp" />
+<jsp:include page="cabecalho.jsp" >
+	<jsp:param value="Duelo | Duelo de Gigantes" name="titulo"/>
+	<jsp:param value="active" name="dactive"/>
+</jsp:include>
 
-	<div class="jumbotron">
-		<h1>Hora de Duelar</h1>
-		<p class="lead">Escolha seu guerreiro e comece a batalha. Torça
-			para que seu exercito seja mais forte do que o rival.</p>
-		<p>
-			<a class="btn btn-lg btn-success" href="#" role="button">Quero
-				cadastrar um novo Duelo!</a>
-		</p>
-	</div>
+<jsp:include page="introducao.jsp" >
+	<jsp:param value="Hora de Duelar" name="introducao"/>
+	<jsp:param value="Escolha seu guerreiro e comece a batalha. Torça para que seu exercito seja mais forte do que o rival." name="texto"/>
+	<jsp:param value="Quero cadastrar um novo Duelo!" name="botao"/>
+	<jsp:param value="cadastro.jsp" name="destino"/>
+</jsp:include>
 
 	<div class="row marketing">
 		<div class="col-lg-6">

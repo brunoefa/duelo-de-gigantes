@@ -12,6 +12,14 @@ body {
   padding-left: 15px;
 }
 
+.footer{
+	padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    width: 730px;
+}
+
 /* Custom page header */
 .header {
   padding-bottom: 20px;
