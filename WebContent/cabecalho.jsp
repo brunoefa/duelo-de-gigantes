@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="header.jsp" >
 	<jsp:param value="${param.titulo}" name="titulo"/>
 </jsp:include>
@@ -13,3 +14,29 @@
 			</nav>
 			<h3 class="text-muted">Duelo de Gigantes</h3>
 		</div>
+		<c:if test="${sucesso != null}">
+			<div class="alert alert-success alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			  	${sucesso}
+			</div>
+		</c:if>
+		
+		<c:if test="${erro != null}">
+			<div class="alert alert-danger alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			  	${erro}
+			</div>
+		</c:if>
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
