@@ -114,3 +114,7 @@ body {
     border-bottom: 0;
   }
 }
+
+a.titulo{
+	text-decoration: none;
+}

@@ -7,12 +7,12 @@
 		<div class="header clearfix">
 			<nav>
 				<ul class="nav nav-pills pull-right">
-					<li role="presentation" class="${param.dactive}"><a href="duelo.jsp">Duelo</a></li>
-					<li role="presentation" class="${param.cactive}"><a href="cadastro.jsp">Cadastro</a></li>
+					<li role="presentation" class="${param.dactive}"><a href="duelo">Duelo</a></li>
+					<li role="presentation" class="${param.cactive}"><a href="duelo?acao=cadastrar">Cadastro</a></li>
 					<li role="presentation" class="${param.sactive}"><a href="sobre.jsp">Sobre</a></li>
 				</ul>
 			</nav>
-			<h3 class="text-muted">Duelo de Gigantes</h3>
+			<h3 class="text-muted"><a href="duelo" class="titulo">Duelo de Gigantes</a></h3>
 		</div>
 		<c:if test="${sucesso != null}">
 			<div class="alert alert-success alert-dismissible" role="alert">
