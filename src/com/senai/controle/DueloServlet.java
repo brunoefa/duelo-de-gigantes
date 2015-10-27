@@ -59,6 +59,12 @@ public class DueloServlet extends HttpServlet {
 	}
 	
 	private void mostrarDuelo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try {
+			this.duelo = dao.buscarDuelo();
+		} catch (Exception e) {
+			request.setAttribute("erro", "Erro ao exibir duelo =(");
+		}
+		request.setAttribute("duelo", this.duelo);
 		encaminharRequisicao("duelo.jsp", request, response);
 	}
 	

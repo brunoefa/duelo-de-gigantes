@@ -2,6 +2,7 @@ package com.senai.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.senai.modelo.Duelo;
@@ -31,6 +32,34 @@ public class DueloDao {
 			throw new RuntimeException();
 		}
 				
+	}
+
+	public Duelo buscarDuelo() {
+		Duelo d = new Duelo();
+		String sql = "SELECT * FROM duelo ORDER BY RAND() LIMIT 1";
+		try {
+			PreparedStatement stm = conexao.prepareStatement(sql);
+			ResultSet rs = stm.executeQuery();
+			while (rs.next()) {
+				d = preencherDuelo(rs);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			throw new RuntimeException();
+		}		
+		return d;
+	}
+	
+	private Duelo preencherDuelo(ResultSet rs) throws SQLException{
+		Duelo duelo = new Duelo();
+		duelo.setId(rs.getInt("id"));
+		duelo.setNome1(rs.getString("nome1"));
+		duelo.setImagem1(rs.getString("imagem1"));
+		duelo.setVitorias1(rs.getInt("vitorias1"));
+		duelo.setNome2(rs.getString("nome2"));
+		duelo.setImagem2(rs.getString("imagem2"));
+		duelo.setVitorias2(rs.getInt("vitorias2"));
+		return duelo;
 	}
 	
 }
