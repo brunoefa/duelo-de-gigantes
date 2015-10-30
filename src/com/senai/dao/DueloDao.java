@@ -31,10 +31,9 @@ public class DueloDao {
 			System.out.println(e.getMessage());
 			throw new RuntimeException();
 		}
-				
 	}
 
-	public Duelo buscarDuelo() {
+	public Duelo buscarDueloRandomico() {
 		Duelo d = new Duelo();
 		String sql = "SELECT * FROM duelo ORDER BY RAND() LIMIT 1";
 		try {
@@ -50,6 +49,47 @@ public class DueloDao {
 		return d;
 	}
 	
+	public Duelo buscarDuelo(Integer id) {
+		Duelo d = new Duelo();
+		String sql = "SELECT * FROM duelo WHERE id = ?";
+		try {
+			PreparedStatement stm = conexao.prepareStatement(sql);
+			stm.setInt(1, id);
+			ResultSet rs = stm.executeQuery();
+			while (rs.next()) {
+				d = preencherDuelo(rs);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			throw new RuntimeException();
+		}		
+		return d;
+	}
+	
+	public Duelo registrarVoto(Integer id, String oponente) {
+		String sql = "";
+		if ("1".equals(oponente)) {
+			sql = "UPDATE duelo SET vitorias1 = vitorias1 + 1 WHERE id = ?";
+		} else if ("2".equals(oponente)){
+			sql = "UPDATE duelo SET vitorias2 = vitorias2 + 1 WHERE id = ?";
+		}
+		
+		try {
+			PreparedStatement stm = conexao.prepareStatement(sql);
+			stm.setInt(1, id);
+			
+			stm.execute();
+			stm.close();
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			throw new RuntimeException();
+		}
+		
+		return buscarDuelo(id);
+		
+	}
+	
 	private Duelo preencherDuelo(ResultSet rs) throws SQLException{
 		Duelo duelo = new Duelo();
 		duelo.setId(rs.getInt("id"));
@@ -61,5 +101,6 @@ public class DueloDao {
 		duelo.setVitorias2(rs.getInt("vitorias2"));
 		return duelo;
 	}
+
 	
 }

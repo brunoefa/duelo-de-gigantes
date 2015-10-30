@@ -16,7 +16,7 @@
 	<div class="row marketing">
 		<div class="col-lg-6">
 			<div class="center">
-				<a href="#"> <img data-src="holder.js/300x300"
+				<a href="duelo?acao=votar&id=${duelo.id}&oponente=1"> <img data-src="holder.js/300x300"
 					class="img-circle" alt="Oponente 1"
 					src="${duelo.imagem1}"
 					data-holder-rendered="true" style="width: 300px; height: 300px;">
@@ -27,7 +27,7 @@
 
 		<div class="col-lg-6">
 			<div class="center">
-				<a href="#"> <img data-src="holder.js/300x300"
+				<a href="duelo?acao=votar&id=${duelo.id}&oponente=2"> <img data-src="holder.js/300x300"
 					class="img-circle" alt="300x300"
 					src="${duelo.imagem2}"
 					data-holder-rendered="true" style="width: 300px; height: 300px;">

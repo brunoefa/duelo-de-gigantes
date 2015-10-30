@@ -29,6 +29,8 @@ public class DueloServlet extends HttpServlet {
 			salvarDuelo(request, response);
 		}else if ("cadastrar".equals(acao)) {
 			mostrarCadastro(request, response);
+		}else if ("votar".equals(acao)) {
+			votarDuelo(request, response);
 		} else {
 			mostrarDuelo(request, response);
 		}
@@ -36,6 +38,11 @@ public class DueloServlet extends HttpServlet {
 	
 	private void capturarParametros(HttpServletRequest request) throws ServletException, IOException {
 		Duelo d = new Duelo();
+		
+		String sid = request.getParameter("id");
+		if (sid != null) {
+			d.setId(Integer.parseInt(sid));
+		}
 		d.setNome1(request.getParameter("nome1"));
 		d.setNome2(request.getParameter("nome2"));
 		d.setImagem1(request.getParameter("imagem1"));
@@ -47,10 +54,10 @@ public class DueloServlet extends HttpServlet {
 		capturarParametros(request);
 		try {
 			dao.salvar(this.duelo);
+			request.setAttribute("sucesso", "Duelo salvo com sucesso =)");
 		} catch (Exception e) {
 			request.setAttribute("erro", "Problema ao salvar Duelo =(");
 		}
-		request.setAttribute("sucesso", "Duelo salvo com sucesso =)");
 		encaminharRequisicao("cadastro.jsp", request, response);
 	}
 	
@@ -60,12 +67,25 @@ public class DueloServlet extends HttpServlet {
 	
 	private void mostrarDuelo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			this.duelo = dao.buscarDuelo();
+			this.duelo = dao.buscarDueloRandomico();
+			request.setAttribute("duelo", this.duelo);
 		} catch (Exception e) {
 			request.setAttribute("erro", "Erro ao exibir duelo =(");
 		}
-		request.setAttribute("duelo", this.duelo);
 		encaminharRequisicao("duelo.jsp", request, response);
+	}
+	
+	private void votarDuelo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		capturarParametros(request);
+		String oponente = request.getParameter("oponente");
+		try {
+			Duelo d = dao.registrarVoto(this.duelo.getId(), oponente);
+			request.setAttribute("duelo", d);
+			request.setAttribute("sucesso", "Voto registrado com sucesso =)");
+		} catch (Exception e) {
+			request.setAttribute("erro", "Problema ao registrar voto =(");
+		}
+		encaminharRequisicao("resultado.jsp", request, response);
 	}
 	
 	private void encaminharRequisicao(String destino, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
