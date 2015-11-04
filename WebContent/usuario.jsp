@@ -2,7 +2,7 @@
 
 <jsp:include page="cabecalho.jsp" >
 	<jsp:param value="Cadastro Usuário | Duelo de Gigantes" name="titulo"/>
-	<jsp:param value="active" name="cactive"/>
+	<jsp:param value="active" name="uactive"/>
 </jsp:include>
 
 <jsp:include page="introducao.jsp" >
@@ -40,5 +40,7 @@
 			</p>
 			</form>
 		</div>
+		
+	</div>
 
 <jsp:include page="rodape.jsp" />
