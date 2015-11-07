@@ -28,23 +28,27 @@ public class UsuarioServlet extends HttpServlet {
 		String acao = request.getParameter("acao");
 		if ("salvar".equals(acao)) {
 			salvarUsuario(request, response);
+		} else if ("login".equals(acao)) {
+			mostrarLogin(request, response);
+		} else if ("logar".equals(acao)) {
+			efetuarLogin(request, response);
 		} else {
 			mostrarCadastro(request, response);
 		}
 	}
 	
 	private void capturarParametros(HttpServletRequest request) throws ServletException, IOException {
-		Usuario d = new Usuario();
+		Usuario u = new Usuario();
 		
 		String sid = request.getParameter("id");
 		if (sid != null) {
-			d.setId(Integer.parseInt(sid));
+			u.setId(Integer.parseInt(sid));
 		}
-		d.setNome(request.getParameter("nome"));
-		d.setEmail(request.getParameter("email"));
-		d.setSenha(request.getParameter("senha"));
-		d.setConfirmacaoDeSenha(request.getParameter("confirmacao"));
-		this.usuario = d;
+		u.setNome(request.getParameter("nome"));
+		u.setEmail(request.getParameter("email"));
+		u.setSenha(request.getParameter("senha"));
+		u.setConfirmacaoDeSenha(request.getParameter("confirmacao"));
+		this.usuario = u;
 	}
 	
 	private void salvarUsuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -61,6 +65,34 @@ public class UsuarioServlet extends HttpServlet {
 		encaminharRequisicao("usuario.jsp", request, response);
 	}
 	
+	private void efetuarLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		capturarParametros(request);
+		try {
+			Usuario usuarioBanco = dao.buscarUsuario(this.usuario.getEmail());
+			validarLogin(this.usuario, usuarioBanco);
+			request.setAttribute("sucesso", "Login efetuado com sucesso!");
+		} catch (UsuarioException e) {
+			request.setAttribute("erro", e.getMessage());
+		} catch (Exception e) {
+			request.setAttribute("erro", "Problema ao efetuar login =(");
+		}
+		encaminharRequisicao("login.jsp", request, response);
+	}	
+	
+	private void validarLogin(Usuario usuarioLogin, Usuario usuarioBanco) {
+		if (usuarioBanco == null) {
+			throw new UsuarioException("Usuário não cadastrado");
+		}
+		
+		if (!usuarioBanco.getSenha().equals(usuarioLogin.getSenha())) {
+			throw new UsuarioException("Usuário ou senha inválidos");
+		}
+	}
+
+	private void mostrarLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		encaminharRequisicao("login.jsp", request, response);
+	}
+	
 	private void validarUsuario(Usuario usuario) throws UsuarioException {
 		if ("".equals(usuario.getNome().trim())  ||
 			"".equals(usuario.getEmail().trim()) ||
@@ -74,6 +106,11 @@ public class UsuarioServlet extends HttpServlet {
 		
 		if (usuario.getSenha().trim().length() < 6) {
 			throw new UsuarioException("A senha deve conter no mínimo 6 dígitos.");
+		}
+		
+		String regex = "([0-9].*[a-zA-Z])|([a-zA-Z].*[0-9])";
+		if (!usuario.getSenha().matches(regex)) {
+			throw new UsuarioException("A senha deve conter números e letras.");
 		}
 	}
 

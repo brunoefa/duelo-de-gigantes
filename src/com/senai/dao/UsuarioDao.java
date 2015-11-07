@@ -2,6 +2,7 @@ package com.senai.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.senai.exception.UsuarioException;
@@ -33,5 +34,32 @@ public class UsuarioDao {
 			System.out.println(e.getMessage());
 			throw new RuntimeException();
 		}
+	}
+
+	public Usuario buscarUsuario(String email) {
+		Usuario u = null;
+		String sql = "SELECT * FROM usuario WHERE email = ?";
+		try {
+			PreparedStatement stm = conexao.prepareStatement(sql);
+			stm.setString(1, email);
+			ResultSet rs = stm.executeQuery();
+			while (rs.next()) {
+				u = new Usuario();
+				u = preencherUsuario(rs);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			throw new RuntimeException();
+		}		
+		return u;
+	}
+
+	private Usuario preencherUsuario(ResultSet rs)  throws SQLException {
+		Usuario u = new Usuario();
+		u.setId(rs.getInt("id"));
+		u.setNome(rs.getString("nome"));
+		u.setEmail(rs.getString("email"));
+		u.setSenha(rs.getString("senha"));
+		return u;
 	}
 }

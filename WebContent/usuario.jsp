@@ -26,11 +26,11 @@
 				</div>
 				<div class="form-group">
 					<label for="senha">Senha</label>
-					<input name="senha" type="text" class="form-control" id="senha" placeholder="Senha">
+					<input name="senha" type="password" class="form-control" id="senha" placeholder="Senha">
 				</div>
 				<div class="form-group">
 					<label for="confirmacao">Confirmar Senha</label>
-					<input name="confirmacao" type="text" class="form-control" id="confirmacao" placeholder="Confirmação de senha">
+					<input name="confirmacao" type="password" class="form-control" id="confirmacao" placeholder="Confirmação de senha">
 				</div>
 			</div>
 
