@@ -13,7 +13,7 @@
 </jsp:include>
 
 		<div class="row marketing">
-			<form action="duelo" method="get">
+			<form action="duelo" method="post">
 			<input type="hidden" name="acao" value="salvar">
 			<div class="col-lg-6">
 				<div class="center">

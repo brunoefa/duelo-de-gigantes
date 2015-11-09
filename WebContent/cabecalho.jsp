@@ -11,7 +11,13 @@
 					<li role="presentation" class="${param.cactive}"><a href="duelo?acao=cadastrar">Cadastrar Duelo</a></li>
 					<li role="presentation" class="${param.sactive}"><a href="sobre.jsp">Sobre</a></li>
 					<li role="presentation" class="${param.uactive}"><a href="usuario">Cadastrar</a></li>
+					<c:if test="${sessionScope.usuario == null}">
 					<li role="presentation" class="${param.lactive}"><a href="usuario?acao=login">Entrar</a></li>
+					</c:if>
+					<c:if test="${sessionScope.usuario != null}">
+					<li role="presentation" class="${param.lactive}">${sessionScope.usuario.primeiroNome} <a href="usuario?acao=sair">Sair</a></li>
+					</c:if>
+					
 				</ul>
 			</nav>
 			<h3 class="text-muted"><a href="duelo" class="titulo">Duelo de Gigantes</a></h3>

@@ -38,4 +38,8 @@ public class Usuario {
 	public void setConfirmacaoDeSenha(String confirmacaoDeSenha) {
 		this.confirmacaoDeSenha = confirmacaoDeSenha;
 	}
+	
+	public String getPrimeiroNome() {
+		return this.nome.split(" ")[0];
+	}
 }

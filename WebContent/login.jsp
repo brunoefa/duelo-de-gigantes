@@ -13,7 +13,7 @@
 </jsp:include>
 
 		<div class="row marketing">
-			<form action="usuario" method="get">
+			<form action="usuario" method="post">
 			<input type="hidden" name="acao" value="logar">
 			<div class="col-lg-12">
 				<div class="form-group">

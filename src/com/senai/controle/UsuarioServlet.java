@@ -26,14 +26,24 @@ public class UsuarioServlet extends HttpServlet {
 
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String acao = request.getParameter("acao");
-		if ("salvar".equals(acao)) {
-			salvarUsuario(request, response);
-		} else if ("login".equals(acao)) {
-			mostrarLogin(request, response);
-		} else if ("logar".equals(acao)) {
-			efetuarLogin(request, response);
-		} else {
-			mostrarCadastro(request, response);
+		
+		if ("sair".equals(acao)) {
+			efetuarLogout(request, response); 
+		}
+		
+		Usuario usuario = (Usuario)request.getSession().getAttribute("usuario");
+		if (usuario == null) {
+			if ("salvar".equals(acao)) {
+				salvarUsuario(request, response);
+			} else if ("login".equals(acao)) {
+				mostrarLogin(request, response);
+			} else if ("logar".equals(acao)) {
+				efetuarLogin(request, response);
+			} else {
+				mostrarCadastro(request, response);
+			}
+		}else {
+			mostrarLogout(request, response);
 		}
 	}
 	
@@ -70,13 +80,16 @@ public class UsuarioServlet extends HttpServlet {
 		try {
 			Usuario usuarioBanco = dao.buscarUsuario(this.usuario.getEmail());
 			validarLogin(this.usuario, usuarioBanco);
+			request.getSession().setAttribute("usuario", usuarioBanco);
 			request.setAttribute("sucesso", "Login efetuado com sucesso!");
+			encaminharRequisicao("duelo", request, response);
 		} catch (UsuarioException e) {
 			request.setAttribute("erro", e.getMessage());
+			mostrarLogin(request, response);
 		} catch (Exception e) {
 			request.setAttribute("erro", "Problema ao efetuar login =(");
+			mostrarLogin(request, response);
 		}
-		encaminharRequisicao("login.jsp", request, response);
 	}	
 	
 	private void validarLogin(Usuario usuarioLogin, Usuario usuarioBanco) {
@@ -90,6 +103,15 @@ public class UsuarioServlet extends HttpServlet {
 	}
 
 	private void mostrarLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		encaminharRequisicao("login.jsp", request, response);
+	}
+	
+	private void mostrarLogout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		encaminharRequisicao("logout.jsp", request, response);
+	}
+	
+	private void efetuarLogout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getSession().invalidate();
 		encaminharRequisicao("login.jsp", request, response);
 	}
 	
