@@ -66,13 +66,19 @@ public class UsuarioServlet extends HttpServlet {
 		try {
 			validarUsuario(this.usuario);
 			dao.salvar(this.usuario);
+
+			request.getSession().setAttribute("usuario", this.usuario);
 			request.setAttribute("sucesso", "Usuario salvo com sucesso =)");
+
+			encaminharRequisicao("duelo?acao=mostrar", request, response);
 		} catch (UsuarioException e) {
 			request.setAttribute("erro", e.getMessage());
+			encaminharRequisicao("usuario.jsp", request, response);
 		} catch (Exception e) {
 			request.setAttribute("erro", "Problema ao salvar Usuario =(");
+			System.out.println(e.getMessage());
+			encaminharRequisicao("usuario.jsp", request, response);
 		}
-		encaminharRequisicao("usuario.jsp", request, response);
 	}
 	
 	private void efetuarLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

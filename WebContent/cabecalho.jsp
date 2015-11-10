@@ -7,15 +7,18 @@
 		<div class="header clearfix">
 			<nav>
 				<ul class="nav nav-pills pull-right">
-					<li role="presentation" class="${param.dactive}"><a href="duelo">Duelo</a></li>
-					<li role="presentation" class="${param.cactive}"><a href="duelo?acao=cadastrar">Cadastrar Duelo</a></li>
+					<li role="presentation" class="${param.dactive}"><a href="duelo">Duelar</a></li>
+					<li role="presentation" class="${param.cactive}"><a href="duelo?acao=cadastrar">Novo duelo</a></li>
 					<li role="presentation" class="${param.sactive}"><a href="sobre.jsp">Sobre</a></li>
+					<c:if test="${sessionScope.usuario == null}">
 					<li role="presentation" class="${param.uactive}"><a href="usuario">Cadastrar</a></li>
+					</c:if>
 					<c:if test="${sessionScope.usuario == null}">
 					<li role="presentation" class="${param.lactive}"><a href="usuario?acao=login">Entrar</a></li>
 					</c:if>
 					<c:if test="${sessionScope.usuario != null}">
-					<li role="presentation" class="${param.lactive}">${sessionScope.usuario.primeiroNome} <a href="usuario?acao=sair">Sair</a></li>
+					<li class="user-name">${sessionScope.usuario.primeiroNome}</li>
+					<li role="presentation" class="${param.lactive}"><a href="usuario?acao=sair">Sair</a></li>
 					</c:if>
 					
 				</ul>

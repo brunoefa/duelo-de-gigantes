@@ -118,3 +118,9 @@ body {
 a.titulo{
 	text-decoration: none;
 }
+
+.user-name{
+	text-align: right;
+    padding: 10px;
+    margin-left: 30px !important;
+}
