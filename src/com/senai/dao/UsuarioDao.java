@@ -1,5 +1,7 @@
 package com.senai.dao;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,6 +9,7 @@ import java.sql.SQLException;
 
 import com.senai.exception.UsuarioException;
 import com.senai.modelo.Usuario;
+import com.senai.util.StringUtils;
 
 public class UsuarioDao {
 	private Connection conexao;
@@ -15,14 +18,14 @@ public class UsuarioDao {
 		this.conexao = new ConnectionFactory().getConnection();
 	}
 	
-	public void salvar(Usuario usuario) {
+	public void salvar(Usuario usuario) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		String sql = "INSERT INTO usuario (nome, email, senha) VALUES (?,?,?)";
 		try {
 			PreparedStatement stm = conexao.prepareStatement(sql);
 			
 			stm.setString(1, usuario.getNome());
 			stm.setString(2, usuario.getEmail());
-			stm.setString(3, usuario.getSenha());
+			stm.setString(3, StringUtils.criptografarSenha(usuario.getSenha()));
 			
 			stm.execute();
 			stm.close();

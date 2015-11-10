@@ -1,6 +1,8 @@
 package com.senai.controle;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.senai.dao.UsuarioDao;
 import com.senai.exception.UsuarioException;
 import com.senai.modelo.Usuario;
+import com.senai.util.StringUtils;
 
 @WebServlet("/usuario")
 public class UsuarioServlet extends HttpServlet {
@@ -47,7 +50,7 @@ public class UsuarioServlet extends HttpServlet {
 		}
 	}
 	
-	private void capturarParametros(HttpServletRequest request) throws ServletException, IOException {
+	private void capturarParametros(HttpServletRequest request) throws ServletException, IOException, NoSuchAlgorithmException {
 		Usuario u = new Usuario();
 		
 		String sid = request.getParameter("id");
@@ -56,14 +59,15 @@ public class UsuarioServlet extends HttpServlet {
 		}
 		u.setNome(request.getParameter("nome"));
 		u.setEmail(request.getParameter("email"));
+		
 		u.setSenha(request.getParameter("senha"));
 		u.setConfirmacaoDeSenha(request.getParameter("confirmacao"));
 		this.usuario = u;
 	}
 	
 	private void salvarUsuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		capturarParametros(request);
 		try {
+			capturarParametros(request);
 			validarUsuario(this.usuario);
 			dao.salvar(this.usuario);
 
@@ -82,8 +86,8 @@ public class UsuarioServlet extends HttpServlet {
 	}
 	
 	private void efetuarLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		capturarParametros(request);
 		try {
+			capturarParametros(request);
 			Usuario usuarioBanco = dao.buscarUsuario(this.usuario.getEmail());
 			validarLogin(this.usuario, usuarioBanco);
 			request.getSession().setAttribute("usuario", usuarioBanco);
@@ -98,12 +102,12 @@ public class UsuarioServlet extends HttpServlet {
 		}
 	}	
 	
-	private void validarLogin(Usuario usuarioLogin, Usuario usuarioBanco) {
+	private void validarLogin(Usuario usuarioLogin, Usuario usuarioBanco) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		if (usuarioBanco == null) {
 			throw new UsuarioException("Usuário não cadastrado");
 		}
 		
-		if (!usuarioBanco.getSenha().equals(usuarioLogin.getSenha())) {
+		if (!usuarioBanco.getSenha().equals(StringUtils.criptografarSenha(usuarioLogin.getSenha()))) {
 			throw new UsuarioException("Usuário ou senha inválidos");
 		}
 	}
